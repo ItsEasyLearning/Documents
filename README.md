@@ -4,3 +4,6 @@ Exclusive material/updates/decks on latest Azure Data related technologies from 
 
 Please enroll to course on Udemy to know how to use the datasets and code:
 https://www.udemy.com/course/azure-big-data-mini-project/?referralCode=5435C045B2BFE9747CF0
+
+NY taxi files download:
+https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page
