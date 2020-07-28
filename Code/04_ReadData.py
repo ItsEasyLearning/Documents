@@ -86,7 +86,7 @@ df.show()
 
 #Write to curated layer
 
-df_final.write.mode("overwrite").parquet('abfss://targetmovies@moviescurated.dfs.core.windows.net/movies')
+df_final.write.mode("overwrite").parquet('abfss://targetmovies@<your account>.dfs.core.windows.net/movies')
 
 # COMMAND ----------
 
