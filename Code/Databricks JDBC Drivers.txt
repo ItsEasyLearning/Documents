@@ -1,0 +1,62 @@
+'''
+This document is part of course “Azure Data Engineering - Mini Project Development” - https://www.udemy.com/course/azure-big-data-mini-project/ 
+
+After completing pyodbc session, you are set to read/push data from/to sql server / any other rdbms using jdbc drivers. Unlike pyodbc, you need not separately install jdbc drivers in Databricks.
+
+Read data from SQL – Way 1 using connection string:
+'''
+## JDBC Read from SQL ##
+dbServer = "<server name/ip>"
+dbDatabase = "<DBNAME>"
+dbUser = "<sql login>"
+dbPass = "<sql password>"
+dbJdbcPort =  "<port – default 1433>"
+sqlDbUrl = "jdbc:sqlserver://" + dbServer + ":" + dbJdbcPort + ";database=" + dbDatabase + ";user=" + dbUser+";password=" + dbPass
+
+sql = "(select * from SQLTableName) tbl"
+df = spark.read.jdbc(url=sqlDbUrl, table=sql) #data is read into dataframe
+df.show()
+
+#Read data from SQL – Way 2 using connection properties:
+## JDBC Read from SQL ##
+dbServer = "<server name/ip>"
+dbDatabase = "<DBNAME>"
+dbUser = "<sql login>"
+dbPass = "<sql password>"
+dbJdbcPort =  "<port – default 1433>"
+jdbcUrl = "jdbc:sqlserver://{0}:{1};database={2}".format(dbServer, dbJdbcPort, dbDatabase)
+connectionProperties = {
+  "user" : dbUser,
+  "password" : dbPass,
+  "driver" : "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+}
+
+query = "(select * from SQLTableName) tbl"
+df = spark.read.jdbc(url=jdbcUrl, table=query, properties=connectionProperties) #read data into dataframe
+df.show()
+
+'''
+Write data to SQL:
+You can either append data to SQL or overwrite entire table. Merge/Delete etc DML operations are not supported. For Append mode dataframe structure must be same with SQL table structure. In case of overwrite, it drops and recreates the entire table.
+'''
+
+## JDBC Write to SQL ##
+dbServer = "<server name/ip>"
+dbDatabase = "<DBNAME>"
+dbUser = "<sql login>"
+dbPass = "<sql password>"
+dbJdbcPort =  "<port – default 1433>"
+jdbcUrl = "jdbc:sqlserver://{0}:{1};database={2}".format(dbServer, dbJdbcPort, dbDatabase)
+connectionProperties = {
+  "user" : dbUser,
+  "password" : dbPass,
+  "driver" : "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+}
+df = <your dataframe>
+
+#append mode
+df.write.jdbc(url=jdbcUrl, table="<sql table name>", mode="append", properties=connectionProperties)
+
+#overwrite mode
+df.write.jdbc(url=jdbcUrl, table="<sql table name>", mode="overwrite", properties=connectionProperties)
+
